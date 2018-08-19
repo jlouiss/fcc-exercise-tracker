@@ -23,6 +23,9 @@ app.use((req, res, next) => {
   next()
 })
 
+app.use('/api/exercise', api)
+
+
 // Not found middleware
 app.use((req, res, next) => {
   return next({ status: 404, message: 'not found' })
@@ -46,7 +49,5 @@ app.use((err, req, res, next) => {
   res.status(errCode).type('txt')
     .send(errMessage)
 })
-
-app.use('/api/exercise', api)
 
 module.exports = app
