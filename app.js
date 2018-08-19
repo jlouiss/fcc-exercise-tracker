@@ -4,7 +4,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const mongoose = require('mongoose')
-
+const api = require('./api')
 const app = express()
 
 mongoose.connect(process.env.MONGODB_URL)
@@ -41,5 +41,7 @@ app.use((err, req, res, next) => {
   res.status(errCode).type('txt')
     .send(errMessage)
 })
+
+app.use('/api/exercise', api)
 
 module.exports = app
