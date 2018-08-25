@@ -26,7 +26,8 @@ router.post('/new-user',
   },
   async (req, res) => {
     await User.create({ username: req.body.username }, (err, data) => {
-      res.json(data)
+      const { username, _id } = data
+      res.json({ username, _id })
     })
   }
 )
