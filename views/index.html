@@ -49,19 +49,19 @@
                     <form action="/api/exercise/add" method="post">
                         <div class="form-group">
                             <label for="uid">User ID<sup class="text-danger">*</sup></label>
-                            <input class="form-control" id="uid" type="text" name="userId" placeholder="User ID">
+                            <input class="form-control" id="uid" type="text" name="userId" placeholder="User ID" required>
                         </div>
                         <div class="form-group">
                             <label for="desc">Description<sup class="text-danger">*</sup></label>
-                            <input class="form-control" id="desc" type="text" name="description" placeholder="Description">
+                            <input class="form-control" id="desc" type="text" name="description" placeholder="Description" required>
                         </div>
                         <div class="form-group">
                             <label for="dur">Duration<sup class="text-danger">*</sup></label>
-                            <input class="form-control" id="dur" type="text" name="duration" placeholder="Duration (minutes)">
+                            <input class="form-control" id="dur" type="number" name="duration" placeholder="Duration (minutes)" required>
                         </div>
                         <div class="form-group">
                             <label for="dat">Date <small class="text-muted">(YYYY-MM-DD)</small></label>
-                            <input class="form-control" id="dat" type="text" name="date" placeholder="Date (yyyy-mm-dd)">
+                            <input class="form-control" id="dat" type="date" name="date" placeholder="Date (yyyy-mm-dd)">
                         </div>
 
                         <button class="btn btn-primary" type="submit">Submit</button>
