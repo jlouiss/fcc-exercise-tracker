@@ -32,7 +32,18 @@ router.post('/new-user',
   }
 )
 
-router.post('/add', (req, res) => {
+router.post('/add', async (req, res) => {
+  const { description, duration, date } = req.body
+  const exercise = { description, duration, date }
+
+  await User.findOneAndUpdate(
+    { _id: req.body.userId },
+    { $push: { exercises: exercise } },
+    (err, data) => {
+      if (err || data.length === 0) return res.json({ error: 'user not found' })
+      else res.json(data)
+    }
+  )
 })
 
 router.get('/', (req, res) => {
