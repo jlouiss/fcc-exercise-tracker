@@ -48,9 +48,19 @@ router.post('/add', async (req, res) => {
   await User.findOneAndUpdate(
     { _id: req.body.userId },
     { $push: { exercises: exercise } },
+    { new: true },
     (err, data) => {
       if (err || data.length === 0) return res.json({ error: 'user not found' })
-      else res.json(data)
+
+      const { username, _id, exercises } = data
+      const exercise = [...exercises].pop()
+      const { description, duration, date } = exercise
+
+      res.json({
+        _id,
+        username,
+        description, duration, date
+      })
     }
   )
 })
