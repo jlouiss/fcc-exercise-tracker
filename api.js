@@ -5,13 +5,22 @@ const mongoose = require('mongoose')
 const shortid = require('shortid')
 const router = express.Router()
 
-const User = mongoose.model('user', new mongoose.Schema({
-  username: String,
+const exerciseSchema = new mongoose.Schema({
+  description: String,
+  duration: Number,
+  date: Date
+})
+
+const userSchema = new mongoose.Schema({
   _id: {
     type: String,
     default: shortid.generate()
-  }
-}))
+  },
+  username: String,
+  exercises: [exerciseSchema]
+})
+
+const User = mongoose.model('user', userSchema)
 
 router.post('/new-user',
   async function checkUserAlreadyExists(req, res, next) {
