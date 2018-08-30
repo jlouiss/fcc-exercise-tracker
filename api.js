@@ -54,12 +54,11 @@ router.post('/add', async (req, res) => {
 
       const { username, _id, exercises } = data
       const exercise = [...exercises].pop()
-      const { description, duration, date } = exercise
 
       res.json({
         _id,
         username,
-        description, duration, date
+        exercise
       })
     }
   )
