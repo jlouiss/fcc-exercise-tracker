@@ -70,10 +70,14 @@ router.get('/log', async (req, res) => {
   if (userId === '')
     return res.json({ error: 'Missing userId' })
 
-  const fromDate = new Date(from)
-  const toDate = new Date(to)
+  const fromDate = from ? new Date(from) : null
+  const toDate = to ? new Date(to) : null
 
-  if (!(fromDate instanceof Date) && from !== null || !(toDate instanceof Date) && to !== null)
+  const datesAreValid =
+    (!(fromDate instanceof Date) && from !== null || fromDate === null && from === null)
+    && (!(toDate instanceof Date) && to !== null || toDate === null && to === null)
+
+  if (datesAreValid)
     return res.json({ error: 'Invalid date(s) provided' })
 
   if (limit < 0 || limit > Number.MAX_SAFE_INTEGER)
@@ -91,26 +95,15 @@ router.get('/log', async (req, res) => {
 
   if (!user) return res.json({ error: 'User not found' })
 
-  const exercises = user.exercises
-    .filter(e => e.date >= fromDate)
-    .filter(e => e.date <= toDate)
-    .filter((e, i) => i <= limit || limit === 0)
+  return res.json({
+    _id: user._id,
+    username: user.username,
+    exercises: user.exercises
+      .filter(e => fromDate ? new Date(e.date) >= toDate : true)
+      .filter(e => toDate ? new Date(e.date) <= toDate : true)
+      .filter((e, i) => i < limit || limit === 0)
+  })
 
-  console.log(exercises)
-  return res.json(exercises)
-
-  // GET /api/exercise/log?{userId}[&from][&to][&limit]
-  // { } = required, [ ] = optional
-
-  // from, to = dates (yyyy-mm-dd); limit = number
-
-  const expected_result = {
-    _id: '',
-    username: '',
-    exercises: [
-      { description: '', duration: '', date: '' }
-    ]
-  }
 })
 
 module.exports = router
