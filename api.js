@@ -74,34 +74,42 @@ router.get('/log', async (req, res) => {
   const toDate = to ? new Date(to) : null
 
   const datesAreValid =
-    (!(fromDate instanceof Date) && from !== null || fromDate === null && from === null)
-    && (!(toDate instanceof Date) && to !== null || toDate === null && to === null)
+    (
+      fromDate instanceof Date && fromDate.toString() !== 'Invalid Date'
+      || fromDate === null
+    )
+    && (
+      toDate instanceof Date && toDate.toString() !== 'Invalid Date'
+      || toDate === null
+    )
 
-  if (datesAreValid)
+  if (!datesAreValid)
     return res.json({ error: 'Invalid date(s) provided' })
 
   if (limit < 0 || limit > Number.MAX_SAFE_INTEGER)
     return res.json({ error: 'Invalid limit' })
 
-  let user
   await User.find({ _id: userId }, (err, data) => {
     if (err) {
       res.json(err)
       return res.end()
     }
 
-    user = data[0]
-  })
+    const user = data[0]
 
-  if (!user) return res.json({ error: 'User not found' })
+    if (!user) {
+      res.json({ error: 'User not found' })
+      return res.end()
+    }
 
-  return res.json({
-    _id: user._id,
-    username: user.username,
-    exercises: user.exercises
-      .filter(e => fromDate ? new Date(e.date) >= toDate : true)
-      .filter(e => toDate ? new Date(e.date) <= toDate : true)
-      .filter((e, i) => i < limit || limit === 0)
+    return res.json({
+      _id: user._id,
+      username: user.username,
+      exercises: user.exercises
+        .filter(e => fromDate ? new Date(e.date) >= fromDate : true)
+        .filter(e => toDate ? new Date(e.date) <= toDate : true)
+        .filter((e, i) => i < limit || limit === 0)
+    })
   })
 
 })
