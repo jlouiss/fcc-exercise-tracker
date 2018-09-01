@@ -16,7 +16,7 @@
 		"dotenv": "^6.0.0"
 	},
 	"engines": {
-		"node": "6.9.1"
+		"node": "8.x"
 	},
 	"repository": {
 		"url": "https://github.com/jlouiss/fcc-exercise-tracker"
